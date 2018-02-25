@@ -1,0 +1,5 @@
+export const INVALIDATE_SESSION = 'INVALIDATE_SESSION';
+
+export default {
+  INVALIDATE_SESSION,
+};
