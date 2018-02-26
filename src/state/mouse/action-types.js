@@ -1,0 +1,7 @@
+export const SET_MOUSE_POSITION = 'SET_MOUSE_POSITION';
+export const TOGGLE_MOUSE_DOWN = 'TOGGLE_MOUSE_DOWN';
+
+export default {
+  SET_MOUSE_POSITION,
+  TOGGLE_MOUSE_DOWN,
+};

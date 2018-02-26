@@ -6,6 +6,7 @@
     }],
     "import/no-named-as-default": [0],
     "function-paren-newline": "off",
+    "object-curly-newline": "off",
     "react/jsx-curly-spacing": [2, "always", {
       "spacing": { "objectLiterals": "never" },
       "allowMultiline": true
@@ -14,7 +15,8 @@
     "react/prop-types": [0],
     "react/jsx-uses-react": "error",
     "max-len": [1, 120, 2, {"ignoreComments": true}],
-    "react/react-in-jsx-scope": ["warn"]
+    "react/react-in-jsx-scope": ["warn"],
+    "jsx-a11y/no-noninteractive-element-interactions": "off"
   },
   "env": {
     "browser": true,

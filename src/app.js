@@ -6,6 +6,8 @@ import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter as Router, routerReducer, routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+import 'normalize.css/normalize.css';
+
 import getProp from 'lodash/get';
 import Routes from './routes';
 import reducers from './state';

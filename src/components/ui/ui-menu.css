@@ -1,0 +1,42 @@
+.dragging {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .58);
+  z-index: 9999;
+  cursor: move;
+}
+
+.draggable:hover {
+  cursor: move;
+}
+
+.ui-menu-bar {
+  background-color: #59556b;
+  padding: .25em ;
+  text-align: left;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .56);
+  font-size: .7em;
+  font-weight: normal;
+  background-color: #595a5c;
+  margin: 0;
+  color: #e1e2e3;
+  padding: .25em;
+  margin-bottom: 1em;
+}
+
+.ui-menu-bar h1 {
+  font-size: 1em;
+  font-weight: normal;
+  background-color: #595a5c;
+  margin: 0;
+  color: #e1e2e3;
+}
+
+.ui-container .ui-menu-bar {
+  /* position: absolute; */
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.ui-container-body {
+  padding: 0px .5em;
+}

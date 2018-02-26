@@ -1,14 +1,9 @@
-import { INVALIDATE_SESSION } from './action-types';
-
-const session = (state = {}, action) => {
-  switch (action.type) {
-    case INVALIDATE_SESSION:
-      return {};
-    default:
-      return state;
-  }
-};
+import mouse from './mouse/reducers';
+import layer from './layer/reducers';
+import selected from './selected/reducers';
 
 export default {
-  session,
+  mouse,
+  layer,
+  selected,
 };
