@@ -6,7 +6,11 @@ import {
 } from './action-types';
 
 const initialState = {
-  default: {},
+  default: {
+    meta: {
+      type: 'pixel',
+    },
+  },
 };
 
 export const layerReducers = (state = initialState, action) => {

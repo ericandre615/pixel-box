@@ -56,11 +56,21 @@ export class UiContainer extends Component {
   }
 
   render() {
-    const { id, draggable, contextMenu, title, uiButton, children, height } = this.props;
+    const {
+      id,
+      draggable,
+      contextMenu,
+      title,
+      uiButton,
+      children,
+      height,
+      relative,
+    } = this.props;
     const { width, headerHeight } = this.state;
     const totalHeight = height + headerHeight;
     const currentStyle = Object.assign({},
       defaultStyle,
+      (relative) ? { position: 'relative' } : null,
       { width },
       (height)
         ? { height: `${totalHeight}px` }

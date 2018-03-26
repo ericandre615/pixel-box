@@ -18,17 +18,19 @@ export class Layer extends Component {
 
   handleMouseDown(e) {
     e.preventDefault();
-    const { mouse, pixel } = this.props;
+    const { mouse, pixel, tool } = this.props;
+    const activePixel = (tool === 'eraser') ? Object.assign({}, pixel, { color: tool }) : null;
 
-    drawPixel(this.ctx, mouse, pixel);
+    drawPixel(this.ctx, mouse, activePixel || pixel);
   }
 
   handleMouseMove(e) {
     e.preventDefault();
-    const { mouse, pixel } = this.props;
+    const { mouse, pixel, tool } = this.props;
+    const activePixel = (tool === 'eraser') ? Object.assign({}, pixel, { color: tool }) : null;
 
     if (mouse.down) {
-      drawPixel(this.ctx, mouse, pixel);
+      drawPixel(this.ctx, mouse, activePixel || pixel);
     }
   }
 

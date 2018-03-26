@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 import { SketchPicker } from 'react-color';
 import { getMouse } from '../../state/mouse/selectors';
 import { getLayers } from '../../state/layer/selectors';
+import { getShowGrid } from '../../state/grid/selectors';
 import { getSelected } from '../../state/selected/selectors';
 import { setMousePosition, toggleMouseDown } from '../../state/mouse/actions';
 import { createLayer, removeLayer, updateLayer } from '../../state/layer/actions';
+import { toggleShowGrid } from '../../state/grid/actions';
 import { setSelected } from '../../state/selected/actions';
 import EditorCanvas from '../editor-canvas';
+import ToolBox from '../../components/toolbox';
 
 export class Main extends Component {
   constructor(props) {
@@ -16,7 +19,6 @@ export class Main extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
-    this.handleColorChange = this.handleColorChange.bind(this);
   }
 
   handleMouseMove(e) {
@@ -45,12 +47,18 @@ export class Main extends Component {
     const {
       mouse,
       layers,
+      showGrid,
       selectedColor,
+      selectedTool,
       dispatchCreateLayer,
       dispatchRemoveLayer,
       dispatchUpdateLayer,
       dispatchSetSelectedColor,
+      dispatchSetSelectedTool,
+      dispatchToggleShowGrid,
     } = this.props;
+
+    const activePixel = { color: selectedColor };
 
     return (
       <section
@@ -63,15 +71,19 @@ export class Main extends Component {
         <EditorCanvas
           mouse={ mouse }
           layers={ layers }
-          pixel={{ color: selectedColor }}
+          pixel={ activePixel }
+          tool={ selectedTool }
+          showGrid={ showGrid }
           createLayer={ dispatchCreateLayer }
           removeLayer={ dispatchRemoveLayer }
           updateLayer={ dispatchUpdateLayer }
+          toggleGrid={ dispatchToggleShowGrid }
         />
         <SketchPicker
           color={ selectedColor }
           onChangeComplete={ dispatchSetSelectedColor }
         />
+        <ToolBox setSelectedTool={ dispatchSetSelectedTool } />
       </section>
     );
   }
@@ -80,7 +92,9 @@ export class Main extends Component {
 const mapStateToProps = state => ({
   mouse: getMouse(state),
   layers: getLayers(state),
+  showGrid: getShowGrid('editor-canvas')(state),
   selectedColor: getSelected('color')(state),
+  selectedTool: getSelected('tool')(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -89,7 +103,9 @@ const mapDispatchToProps = dispatch => ({
   dispatchCreateLayer: layer => dispatch(createLayer(layer)),
   dispatchRemoveLayer: id => dispatch(removeLayer(id)),
   dispatchUpdateLayer: layer => dispatch(updateLayer(layer)),
-  dispatchSetSelectedColor: value => dispatch(setSelected('color', value)),
+  dispatchSetSelectedColor: color => dispatch(setSelected('color', color)),
+  dispatchSetSelectedTool: tool => dispatch(setSelected('tool', tool)),
+  dispatchToggleShowGrid: grid => dispatch(toggleShowGrid(grid)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

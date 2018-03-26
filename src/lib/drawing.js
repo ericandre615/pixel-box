@@ -49,6 +49,15 @@ export const drawGrid = (
   ctx.stroke();
 };
 
+export const clearGrid = (canvas) => {
+  const ctx = canvas.getContext('2d');
+
+  ctx.lineWidth = 1;
+  ctx.clearRect(-1, -1, canvas.width + 1, canvas.height + 1);
+
+  return canvas;
+};
+
 export const drawPixel = (ctx, mouse, pixel) => {
   const pixelWidth = pixel.width * pixel.scale;
   const pixelHeight = pixel.height * pixel.scale;
@@ -66,5 +75,6 @@ export const drawPixel = (ctx, mouse, pixel) => {
 export default {
   snapToGrid,
   drawGrid,
+  clearGrid,
   drawPixel,
 };

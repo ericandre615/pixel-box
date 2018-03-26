@@ -3,31 +3,30 @@ import PropTypes from 'prop-types';
 import { drawGrid } from '../../lib/drawing';
 
 const defaultStyles = {
-  // position: 'absolute',
+  position: 'absolute',
   top: '0',
   left: '0',
-  backgroundColor: 'white',
+  backgroundColor: 'none',
   zIndex: '100',
+  pointerEvents: 'none', // allow click through to below layers
 };
 
 export class CanvasGrid extends Component {
   componentDidMount() {
     // temp test
-    const { id, cell, showGrid } = this.props;
+    const { cell, id } = this.props;
+    const canvas = document.getElementById(`${id}-grid`);
 
-    if (showGrid !== false) {
-      const canvas = document.getElementById(`${id}-grid`);
-
-      drawGrid(canvas, cell);
-    }
+    drawGrid(canvas, cell);
   }
 
   render() {
-    const { showGrid, width, height, id } = this.props;
+    const { showGrid, width, height, id, style } = this.props;
 
-    if (showGrid === false) {
-      return null;
-    }
+    const userStyle = style ? Object.assign({}, defaultStyles, style) : defaultStyles;
+    const currentStyle = Object.assign({},
+      userStyle,
+      { display: (showGrid) ? 'initial' : 'none' });
 
     return (
       <canvas
@@ -35,7 +34,7 @@ export class CanvasGrid extends Component {
         id={ `${id}-grid` }
         width={ width }
         height={ height }
-        style={ defaultStyles }
+        style={ currentStyle }
       />
     );
   }

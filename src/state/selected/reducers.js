@@ -1,6 +1,13 @@
 import { SET_SELECTED } from './action-types';
 
-const initialState = {};
+const initialState = {
+  color: {
+    hex: '#000000',
+    oldHue: 0,
+    rgb: { r: 0, g: 0, b: 0, a: 1 },
+  },
+  tool: 'pencil',
+};
 
 export const selectedReducers = (state = initialState, action) => {
   switch (action.type) {
