@@ -1,0 +1,5 @@
+.layer-canvas:not(:first-child) {
+  position: absolute;
+  top: 29px;
+  left: 8px;
+}

@@ -1,0 +1,21 @@
+.layer-name-input {
+  color: #000;
+  background: none;
+  outline: none;
+  border: none;
+  width: 100%;
+  margin-left: .5em;
+  font-size: 10px;
+  height: 2em;
+}
+
+.layer-name-input:focus {
+  background-color: #FFF;
+  border: 1px solid gray;
+}
+
+.layer-preview {
+  border-bottom: 1px solid #676767;
+  padding: .25em 0;
+  border-top: 1px solid #8e8e8e;
+}

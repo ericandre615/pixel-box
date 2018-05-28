@@ -65,11 +65,13 @@ export class UiContainer extends Component {
       children,
       height,
       relative,
+      styles,
     } = this.props;
     const { width, headerHeight } = this.state;
     const totalHeight = height + headerHeight;
     const currentStyle = Object.assign({},
       defaultStyle,
+      styles,
       (relative) ? { position: 'relative' } : null,
       { width },
       (height)

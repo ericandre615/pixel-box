@@ -72,9 +72,28 @@ export const drawPixel = (ctx, mouse, pixel) => {
   return { x, y, pixelWidth, pixelHeight, color: pixel.color };
 };
 
+export const getCanvasData = (canvas = document.createElement('canvas')) => canvas.toDataURL();
+
+export const drawCanvasData = (canvas = document.createElement('canvas'), dataURL) => {
+  const img = new Image();
+  const ctx = canvas.getContext('2d');
+  img.src = dataURL;
+
+  const drawListener = () => {
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    img.removeEventListener('load', drawListener);
+  };
+
+  img.addEventListener('load', drawListener);
+
+  return { canvas, dataURL };
+};
+
 export default {
   snapToGrid,
   drawGrid,
   clearGrid,
   drawPixel,
+  getCanvasData,
+  drawCanvasData,
 };

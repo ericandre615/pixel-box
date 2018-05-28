@@ -4,6 +4,8 @@ import CanvasGrid from '../../components/canvas-grid';
 import Layer from './layer';
 import GridViewButton from './grid-view-button';
 
+import './editor.css';
+
 const editorId = 'editor-canvas';
 const defaultPixel = {
   width: 4,
@@ -47,10 +49,12 @@ export class EditorCanvas extends Component {
 
     const Layers = Object.keys(layers).map(key => (
       <Layer
+        className="layer-canvas"
         key={ `${key}-layer` }
         id={ key }
         width={ width }
         height={ height }
+        layer={ layers[key] }
         updateLayer={ updateLayer }
         mouse={ mouse }
         pixel={ activePixel }

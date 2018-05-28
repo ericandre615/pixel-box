@@ -11,6 +11,7 @@ import { toggleShowGrid } from '../../state/grid/actions';
 import { setSelected } from '../../state/selected/actions';
 import EditorCanvas from '../editor-canvas';
 import ToolBox from '../../components/toolbox';
+import LayersTool from '../../components/layers-tool';
 
 export class Main extends Component {
   constructor(props) {
@@ -19,6 +20,17 @@ export class Main extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+  }
+
+  componentDidMount() {
+    const { dispatchCreateLayer } = this.props;
+
+    const newLayer = {
+      label: 'second',
+      type: 'pixel',
+    };
+
+    dispatchCreateLayer(newLayer);
   }
 
   handleMouseMove(e) {
@@ -84,6 +96,7 @@ export class Main extends Component {
           onChangeComplete={ dispatchSetSelectedColor }
         />
         <ToolBox setSelectedTool={ dispatchSetSelectedTool } />
+        <LayersTool layers={ layers } updateLayer={ dispatchUpdateLayer } />
       </section>
     );
   }
