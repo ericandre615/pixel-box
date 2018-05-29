@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import './ui-menu.css';
 
@@ -14,6 +15,8 @@ const defaultStyle = {
   minWidth: '128px',
   backgroundColor: '#818184',
   padding: '0px',
+  top: '0px',
+  left: '0px',
 };
 
 const flattenChildren = nodes => nodes.reduce((acc, curr) => acc.concat(
@@ -37,10 +40,20 @@ export class UiContainer extends Component {
     this.state = {
       width: props.width || defaultStyle.width,
       // height: props.height || defaultStyle.height,
+      mouseDown: false,
       headerHeight: 24,
+      shift: {
+        x: 0,
+        y: 0,
+      },
+      dragging: false,
+      dragStarted: false,
     };
 
     this.getWidth = this.getWidth.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
   getWidth(node) {
@@ -55,6 +68,62 @@ export class UiContainer extends Component {
     });
   }
 
+  handleMouseMove(e) {
+    const { id, draggable, setElementPosition } = this.props;
+    const { mouseDown, shift: { x: shiftX, y: shiftY } } = this.state;
+    const { target: { parentElement } } = e;
+
+    if (!parentElement.id || parentElement.id !== id) {
+      return this.setState({ mouseDown: false, dragging: false });
+    }
+
+    if (mouseDown && draggable) {
+      const calcLeft = `${e.pageX - shiftX}px`;
+      const calcTop = `${e.pageY - shiftY}px`;
+
+      setElementPosition(id, { top: calcTop, left: calcLeft });
+    }
+
+    return parentElement;
+  }
+
+  handleMouseDown(e) {
+    e.preventDefault();
+
+    const { target: { parentElement } } = e;
+    const { id, draggable, setElementPosition } = this.props;
+
+    this.setState({
+      mouseDown: true,
+    });
+
+    if (draggable) {
+      const { top, left } = parentElement.getBoundingClientRect();
+      const shiftX = (e.clientX - left);
+      const shiftY = (e.clientY - top);
+
+      this.setState({
+        dragging: true,
+        dragStarted: true,
+        shift: { x: shiftX, y: shiftY },
+      });
+
+      const calcLeft = `${e.pageX - shiftX}px`;
+      const calcTop = `${e.pageY - shiftY}px`;
+
+      setElementPosition(id, { left: calcLeft, top: calcTop });
+    }
+  }
+
+  handleMouseUp(e) {
+    e.preventDefault();
+
+    this.setState({
+      mouseDown: false,
+      dragging: false,
+    });
+  }
+
   render() {
     const {
       id,
@@ -66,13 +135,20 @@ export class UiContainer extends Component {
       height,
       relative,
       styles,
+      layout,
     } = this.props;
-    const { width, headerHeight } = this.state;
+    const { width, headerHeight, dragging, dragStarted } = this.state;
     const totalHeight = height + headerHeight;
+    const { top, left } = (layout) ? layout[id] || {} : { top: '0px', left: '0px' };
+    const containerClassNames = classnames('ui-container', { dragging });
+    const menuBarClassNames = classnames('ui-menu-bar', { draggable });
+
     const currentStyle = Object.assign({},
       defaultStyle,
       styles,
       (relative) ? { position: 'relative' } : null,
+      { top, left },
+      (dragStarted) ? { position: 'absolute' } : null,
       { width },
       (height)
         ? { height: `${totalHeight}px` }
@@ -81,17 +157,22 @@ export class UiContainer extends Component {
     return (
       <section
         id={ id }
-        className="ui-container"
+        className={ containerClassNames }
         data-draggable={ draggable }
         style={ currentStyle }
         ref={ this.getWidth }
       >
         { contextMenu }
-        <section className="ui-menu-bar">
-          <h1 className={ `${(draggable) ? 'draggable' : ''}` }>
+        <section
+          className={ menuBarClassNames }
+          onMouseMove={ this.handleMouseMove }
+          onMouseUp={ this.handleMouseUp }
+          onMouseDown={ this.handleMouseDown }
+        >
+          <span>
             { title }
             { uiButton }
-          </h1>
+          </span>
         </section>
         <section className="ui-container-body">
           { children }

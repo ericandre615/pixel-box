@@ -2,15 +2,21 @@ import React, { Fragment } from 'react';
 import { UiContainer } from '../ui/ui-container';
 import ToolButton from './tool-button';
 
-export const ToolBox = ({ setSelectedTool }) => {
+const id = 'toolbox-ui-container';
+
+export const ToolBox = ({ setSelectedTool, setElementPosition, mouse, layout }) => {
   const EraserButton = ToolButton;
   const PencilButton = ToolButton;
   return (
     <Fragment>
       <UiContainer
-        id="toolbox-ui-container"
+        id={ id }
+        layout={ layout }
         title="Toolbox"
+        mouse={ mouse }
+        draggable
         relative
+        setElementPosition={ setElementPosition }
       >
         <EraserButton tool="eraser" setSelectedTool={ setSelectedTool } />
         <PencilButton tool="pencil" setSelectedTool={ setSelectedTool } />

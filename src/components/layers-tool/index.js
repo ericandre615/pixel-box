@@ -6,7 +6,9 @@ const layerStyles = {
   maxWidth: '200px',
 };
 
-export const LayersTool = ({ layers, updateLayer }) => {
+const id = 'layers-ui-container';
+
+export const LayersTool = ({ layers, updateLayer, mouse, layout, setElementPosition }) => {
   const Layers = Object.keys(layers).map(key => (
     <Layer
       key={ `${key}-layer` }
@@ -21,10 +23,14 @@ export const LayersTool = ({ layers, updateLayer }) => {
   return (
     <Fragment>
       <UiContainer
-        id="layers-ui-container"
+        id={ id }
         title="Layers"
         styles={ layerStyles }
+        layout={ layout }
+        mouse={ mouse }
+        draggable
         relative
+        setElementPosition={ setElementPosition }
       >
         { Layers }
       </UiContainer>
