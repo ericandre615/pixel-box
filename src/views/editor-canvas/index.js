@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { UiContainer } from '../../components/ui/ui-container';
 import CanvasGrid from '../../components/canvas-grid';
 import Layer from './layer';
 import GridViewButton from './grid-view-button';
+
+import './editor.css';
 
 const editorId = 'editor-canvas';
 const defaultPixel = {
@@ -34,10 +36,13 @@ export class EditorCanvas extends Component {
       width,
       height,
       layers,
+      selectedLayer,
+      layout,
       updateLayer,
       mouse,
       pixel,
       tool,
+      setElementPosition,
     } = this.props;
     const { r, g, b, a } = pixel.color.rgb;
 
@@ -47,10 +52,14 @@ export class EditorCanvas extends Component {
 
     const Layers = Object.keys(layers).map(key => (
       <Layer
+        className="layer-canvas"
         key={ `${key}-layer` }
         id={ key }
         width={ width }
         height={ height }
+        layer={ layers[key] }
+        selected={ selectedLayer === key }
+        isBackground={ (key === 'backgroundLayer') }
         updateLayer={ updateLayer }
         mouse={ mouse }
         pixel={ activePixel }
@@ -59,11 +68,15 @@ export class EditorCanvas extends Component {
     ));
 
     return (
-      <section id={ editorId }>
+      <Fragment>
         <UiContainer
           id="editor-ui-container"
-          title="Main Canvas"
+          title={ layers[selectedLayer].label || 'Main Canvas' }
+          layout={ layout }
+          draggable
           relative
+          mouse={ mouse }
+          setElementPosition={ setElementPosition }
           uiButton={
             <GridViewButton
               showGrid={ showGrid }
@@ -85,7 +98,7 @@ export class EditorCanvas extends Component {
             }}
           />
         </UiContainer>
-      </section>
+      </Fragment>
     );
   }
 }

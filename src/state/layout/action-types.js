@@ -1,0 +1,5 @@
+export const SET_ELEMENT_POSITION = 'SET_ELEMENT_POSITION';
+
+export default {
+  SET_ELEMENT_POSITION,
+};

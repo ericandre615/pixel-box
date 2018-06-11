@@ -1,0 +1,7 @@
+export const UPDATE_FORM_INPUT = 'UPDATE_FORM_INPUT';
+export const REGISTER_FORM_INPUT = 'REGISTER_FORM_INPUT';
+
+export default {
+  UPDATE_FORM_INPUT,
+  REGISTER_FORM_INPUT,
+};

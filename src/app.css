@@ -6,3 +6,11 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
+.flex-container {
+  display: flex;
+}
+
+/* .flex-item {
+
+} */

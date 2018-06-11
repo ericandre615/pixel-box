@@ -1,7 +1,7 @@
 .dragging {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, .58);
   z-index: 9999;
-  cursor: move;
+  /* cursor: move; */
 }
 
 .draggable:hover {
