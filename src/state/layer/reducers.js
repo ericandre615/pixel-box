@@ -9,10 +9,18 @@ import {
 const initialId = generate();
 
 const initialState = {
+  backgroundLayer: {
+    id: 'backgroundLayer',
+    label: 'backgroundLayer',
+    priority: 0,
+    locked: true,
+    type: 'pixel',
+  },
   [`${initialId}`]: {
     id: `${initialId}`,
     label: 'default',
-    priority: 0,
+    priority: 1,
+    locked: false,
     type: 'pixel',
   },
 };

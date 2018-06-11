@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { drawPixel, getCanvasData } from '../../lib/drawing';
+import classnames from 'classnames';
+import { drawPixel, getCanvasData, drawCanvasData } from '../../lib/drawing';
 
 export class Layer extends Component {
   constructor(props) {
@@ -11,14 +12,18 @@ export class Layer extends Component {
   }
 
   componentDidMount() {
-    const { id, updateLayer, layer } = this.props;
+    const { id, layer: { dataURL } } = this.props;
 
     this.canvas = document.getElementById(`${id}-layer`);
     this.ctx = this.canvas.getContext('2d');
 
-    const dataURL = getCanvasData(this.canvas);
+    // const dataURL = getCanvasData(this.canvas);
 
-    updateLayer(Object.assign({}, layer, { dataURL }));
+    // updateLayer(Object.assign({}, layer, { dataURL }));
+
+    if (dataURL) {
+      drawCanvasData(this.canvas, dataURL);
+    }
   }
 
   updateLayerData() {
@@ -30,22 +35,39 @@ export class Layer extends Component {
 
   handleMouseDown(e) {
     e.preventDefault();
-    const { mouse, pixel, tool } = this.props;
+    const { mouse, pixel, tool, selected, layer: { locked } } = this.props;
     const activePixel = (tool === 'eraser') ? Object.assign({}, pixel, { color: tool }) : null;
 
-    drawPixel(this.ctx, mouse, activePixel || pixel);
-    this.updateLayerData();
+    if (locked) {
+      return false;
+    }
+
+    if (selected) {
+      drawPixel(this.ctx, mouse, activePixel || pixel);
+      this.updateLayerData();
+    }
+
+    return true;
   }
 
   handleMouseMove(e) {
     e.preventDefault();
-    const { mouse, pixel, tool } = this.props;
+    const { mouse, pixel, tool, selected, layer: { locked } } = this.props;
     const activePixel = (tool === 'eraser') ? Object.assign({}, pixel, { color: tool }) : null;
 
-    if (mouse.down) {
+    console.log('CANVASMOVE ', selected);
+    console.log('ID ', this.props.id);
+
+    if (locked) {
+      return false;
+    }
+
+    if (mouse.down && selected) {
       drawPixel(this.ctx, mouse, activePixel || pixel);
       this.updateLayerData();
     }
+
+    return true;
   }
 
   render() {
@@ -53,15 +75,27 @@ export class Layer extends Component {
       id,
       width,
       height,
+      selected,
+      isBackground,
     } = this.props;
+
+    const layerClassNames = classnames(
+      'layer-canvas',
+      {
+        'layer-canvas-selected': selected,
+      });
+
+    const layerStyles = Object.assign({},
+      (isBackground) ? { backgroundColor: 'white' } : null,
+      (!selected) ? { pointerEvents: 'none' } : null);
 
     return (
       <canvas
         id={ `${id}-layer` }
-        className="layer-canvas"
+        className={ layerClassNames }
         width={ width }
         height={ height }
-        style={{ backgroundColor: 'aliceblue' }}
+        style={ layerStyles }
         onMouseDown={ this.handleMouseDown }
         onMouseMove={ this.handleMouseMove }
       />

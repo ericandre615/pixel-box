@@ -36,6 +36,7 @@ export class EditorCanvas extends Component {
       width,
       height,
       layers,
+      selectedLayer,
       layout,
       updateLayer,
       mouse,
@@ -57,6 +58,8 @@ export class EditorCanvas extends Component {
         width={ width }
         height={ height }
         layer={ layers[key] }
+        selected={ selectedLayer === key }
+        isBackground={ (key === 'backgroundLayer') }
         updateLayer={ updateLayer }
         mouse={ mouse }
         pixel={ activePixel }
@@ -68,7 +71,7 @@ export class EditorCanvas extends Component {
       <Fragment>
         <UiContainer
           id="editor-ui-container"
-          title="Main Canvas"
+          title={ layers[selectedLayer].label || 'Main Canvas' }
           layout={ layout }
           draggable
           relative

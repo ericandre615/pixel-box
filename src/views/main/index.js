@@ -24,17 +24,6 @@ export class Main extends Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
   }
 
-  componentDidMount() {
-    const { dispatchCreateLayer } = this.props;
-
-    const newLayer = {
-      label: 'second',
-      type: 'pixel',
-    };
-
-    dispatchCreateLayer(newLayer);
-  }
-
   handleMouseMove(e) {
     const { dispatchSetMousePosition } = this.props;
     const {
@@ -65,11 +54,13 @@ export class Main extends Component {
       showGrid,
       selectedColor,
       selectedTool,
+      selectedLayer,
       dispatchCreateLayer,
       dispatchRemoveLayer,
       dispatchUpdateLayer,
       dispatchSetSelectedColor,
       dispatchSetSelectedTool,
+      dispatchSetSelectedLayer,
       dispatchToggleShowGrid,
       dispatchSetElementPosition,
     } = this.props;
@@ -91,7 +82,7 @@ export class Main extends Component {
           pixel={ activePixel }
           tool={ selectedTool }
           showGrid={ showGrid }
-          createLayer={ dispatchCreateLayer }
+          selectedLayer={ selectedLayer }
           removeLayer={ dispatchRemoveLayer }
           updateLayer={ dispatchUpdateLayer }
           toggleGrid={ dispatchToggleShowGrid }
@@ -111,8 +102,11 @@ export class Main extends Component {
           mouse={ mouse }
           layers={ layers }
           layout={ layout }
+          selectedLayer={ selectedLayer }
           updateLayer={ dispatchUpdateLayer }
+          createLayer={ dispatchCreateLayer }
           setElementPosition={ dispatchSetElementPosition }
+          setSelectedLayer={ dispatchSetSelectedLayer }
         />
       </section>
     );
@@ -126,6 +120,7 @@ const mapStateToProps = state => ({
   showGrid: getShowGrid('editor-canvas')(state),
   selectedColor: getSelected('color')(state),
   selectedTool: getSelected('tool')(state),
+  selectedLayer: getSelected('layer')(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -136,6 +131,7 @@ const mapDispatchToProps = dispatch => ({
   dispatchUpdateLayer: layer => dispatch(updateLayer(layer)),
   dispatchSetSelectedColor: color => dispatch(setSelected('color', color)),
   dispatchSetSelectedTool: tool => dispatch(setSelected('tool', tool)),
+  dispatchSetSelectedLayer: layer => dispatch(setSelected('layer', layer)),
   dispatchToggleShowGrid: grid => dispatch(toggleShowGrid(grid)),
   dispatchSetElementPosition: (id, position) => dispatch(setElementPosition(id, position)),
 });
