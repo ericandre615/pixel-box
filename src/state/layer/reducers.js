@@ -6,8 +6,6 @@ import {
   REMOVE_LAYER,
 } from './action-types';
 
-const initialId = generate();
-
 const initialState = {
   backgroundLayer: {
     id: 'backgroundLayer',
@@ -16,8 +14,8 @@ const initialState = {
     locked: true,
     type: 'pixel',
   },
-  [`${initialId}`]: {
-    id: `${initialId}`,
+  defaultLayer: {
+    id: 'defaultLayer',
     label: 'default',
     priority: 1,
     locked: false,
@@ -35,9 +33,6 @@ export const layerReducers = (state = initialState, action) => {
 
   switch (action.type) {
     case UPDATE_LAYER:
-      // return (state[action.layer.id]) ? Object.assign({}, state, {
-      //   [action.layer.id]: action.layer,
-      // }) : state;
       return Object.assign({}, state, {
         [action.layer.id]: action.layer,
       });
