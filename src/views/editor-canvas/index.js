@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import getProp from 'lodash/get';
 import { UiContainer } from '../../components/ui/ui-container';
 import CanvasGrid from '../../components/canvas-grid';
 import Layer from './layer';
@@ -18,12 +19,6 @@ const defaultPixel = {
 };
 
 export class EditorCanvas extends Component {
-  componentWillMount() {
-    const { toggleGrid } = this.props;
-
-    toggleGrid(editorId);
-  }
-
   componentDidMount() {
     const { layers } = this.props;
     this.layers = layers;
@@ -43,6 +38,7 @@ export class EditorCanvas extends Component {
       pixel,
       tool,
       setElementPosition,
+      setSelectedColor,
     } = this.props;
     const { r, g, b, a } = pixel.color.rgb;
 
@@ -61,6 +57,7 @@ export class EditorCanvas extends Component {
         selected={ selectedLayer === key }
         isBackground={ (key === 'backgroundLayer') }
         updateLayer={ updateLayer }
+        setSelectedColor={ setSelectedColor }
         mouse={ mouse }
         pixel={ activePixel }
         tool={ tool }
@@ -71,7 +68,7 @@ export class EditorCanvas extends Component {
       <Fragment>
         <UiContainer
           id="editor-ui-container"
-          title={ layers[selectedLayer].label || 'Main Canvas' }
+          title={ getProp(layers[selectedLayer], 'label') || 'Main Canvas' }
           layout={ layout }
           draggable
           relative

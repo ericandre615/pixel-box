@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { drawPixel, getCanvasData, drawCanvasData } from '../../lib/drawing';
+import { drawPixel, getPixel, getCanvasData, drawCanvasData } from '../../lib/drawing';
 
 export class Layer extends Component {
   constructor(props) {
     super(props);
+
+    this.toolFunctions = {
+      pencil: drawPixel,
+      eraser: drawPixel,
+      droplet: getPixel,
+    };
 
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -35,7 +41,7 @@ export class Layer extends Component {
 
   handleMouseDown(e) {
     e.preventDefault();
-    const { mouse, pixel, tool, selected, layer: { locked } } = this.props;
+    const { mouse, pixel, tool, selected, layer: { locked }, setSelectedColor } = this.props;
     const activePixel = (tool === 'eraser') ? Object.assign({}, pixel, { color: tool }) : null;
 
     if (locked) {
@@ -43,7 +49,12 @@ export class Layer extends Component {
     }
 
     if (selected) {
-      drawPixel(this.ctx, mouse, activePixel || pixel);
+      const { color } = this.toolFunctions[tool](this.ctx, mouse, activePixel || pixel);
+
+      if (tool === 'droplet') {
+        setSelectedColor(color);
+      }
+
       this.updateLayerData();
     }
 
@@ -54,9 +65,6 @@ export class Layer extends Component {
     e.preventDefault();
     const { mouse, pixel, tool, selected, layer: { locked } } = this.props;
     const activePixel = (tool === 'eraser') ? Object.assign({}, pixel, { color: tool }) : null;
-
-    console.log('CANVASMOVE ', selected);
-    console.log('ID ', this.props.id);
 
     if (locked) {
       return false;
@@ -77,12 +85,14 @@ export class Layer extends Component {
       height,
       selected,
       isBackground,
+      tool,
     } = this.props;
 
     const layerClassNames = classnames(
       'layer-canvas',
       {
         'layer-canvas-selected': selected,
+        [tool]: tool,
       });
 
     const layerStyles = Object.assign({},

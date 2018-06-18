@@ -7,7 +7,7 @@ const initialState = {
     rgb: { r: 0, g: 0, b: 0, a: 1 },
   },
   tool: 'pencil',
-  layer: '',
+  layer: 'defaultLayer',
 };
 
 export const selectedReducers = (state = initialState, action) => {

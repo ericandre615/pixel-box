@@ -5,6 +5,12 @@ export const snapToGrid = ({ x, y }, { width, height }) => {
   return { x: snapX, y: snapY };
 };
 
+export const rgbToHex = (red, green, blue) => {
+  const rgb = blue | (green << 8) | (red << 16); // eslint-disable-line no-bitwise
+
+  return `#${(0x1000000 + rgb).toString(16).slice(1)}`;
+};
+
 export const drawGrid = (
   canvas,
   cell = { width: 2, height: 2, scale: 1 },
@@ -58,6 +64,21 @@ export const clearGrid = (canvas) => {
   return canvas;
 };
 
+export const getPixel = (ctx, mouse, pixel) => {
+  const pixelWidth = pixel.width * pixel.scale;
+  const pixelHeight = pixel.height * pixel.scale;
+  const { x, y } = mouse;
+  const { data } = ctx.getImageData(x, y, 1, 1);
+  const [r, g, b, a] = data;
+
+  return {
+    x,
+    y,
+    pixelWidth,
+    pixelHeight,
+    color: { hex: rgbToHex(r, g, b), rgb: { r, g, b, a } } };
+};
+
 export const drawPixel = (ctx, mouse, pixel) => {
   const pixelWidth = pixel.width * pixel.scale;
   const pixelHeight = pixel.height * pixel.scale;
@@ -91,8 +112,10 @@ export const drawCanvasData = (canvas = document.createElement('canvas'), dataUR
 
 export default {
   snapToGrid,
+  rgbToHex,
   drawGrid,
   clearGrid,
+  getPixel,
   drawPixel,
   getCanvasData,
   drawCanvasData,

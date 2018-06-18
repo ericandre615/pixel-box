@@ -3,3 +3,11 @@
   top: 29px;
   left: 8px;
 }
+
+.layer-canvas.pencil {
+  cursor: url('/cursors/pencil.svg') 1 30, auto;
+}
+
+.layer-canvas.droplet {
+  cursor: url('/cursors/eyedropper.svg') 1 30, pointer;
+}
