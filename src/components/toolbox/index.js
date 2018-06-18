@@ -7,6 +7,7 @@ const id = 'toolbox-ui-container';
 export const ToolBox = ({ setSelectedTool, setElementPosition, mouse, layout }) => {
   const EraserButton = ToolButton;
   const PencilButton = ToolButton;
+  const DropperButton = ToolButton;
   return (
     <Fragment>
       <UiContainer
@@ -20,6 +21,7 @@ export const ToolBox = ({ setSelectedTool, setElementPosition, mouse, layout }) 
       >
         <EraserButton tool="eraser" setSelectedTool={ setSelectedTool } />
         <PencilButton tool="pencil" setSelectedTool={ setSelectedTool } />
+        <DropperButton tool="droplet" setSelectedTool={ setSelectedTool } />
       </UiContainer>
     </Fragment>
   );

@@ -171,8 +171,8 @@ export class UiContainer extends Component {
         >
           <span>
             { title }
-            { uiButton }
           </span>
+          { uiButton }
         </section>
         <section className="ui-container-body">
           { children }

@@ -87,6 +87,7 @@ export class Main extends Component {
           updateLayer={ dispatchUpdateLayer }
           toggleGrid={ dispatchToggleShowGrid }
           setElementPosition={ dispatchSetElementPosition }
+          setSelectedColor={ dispatchSetSelectedColor }
         />
         <SketchPicker
           color={ selectedColor }
