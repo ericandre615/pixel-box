@@ -8,6 +8,10 @@
   cursor: url('/cursors/pencil.svg') 1 30, auto;
 }
 
-.layer-canvas.droplet {
-  cursor: url('/cursors/eyedropper.svg') 1 30, pointer;
+.layer-canvas.eraser {
+  cursor: url('/cursors/eraser.svg') 1 30, auto;
+}
+
+.layer-canvas.eyedropper {
+  cursor: url('/cursors/eyedropper.svg') 1 30, auto;
 }

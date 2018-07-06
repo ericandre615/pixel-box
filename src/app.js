@@ -5,7 +5,6 @@ import axios from 'axios';
 import createHistory from 'history/createBrowserHistory';
 import { ConnectedRouter as Router, routerReducer, routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
 import 'normalize.css/normalize.css';
 
 import getProp from 'lodash/get';
@@ -25,11 +24,6 @@ const stateKey = 'appState';
 const configureStore = () => {
   const middlewares = [thunk, routerMiddleware(history)];
   const initialState = getSession(stateKey);
-
-  if (process.env.REACT_APP_LOG_LEVEL === 'debug' ||
-    (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test')) {
-    middlewares.push(createLogger());
-  }
 
   const appReducer = combineReducers({
     ...reducers,
@@ -74,6 +68,7 @@ axios.interceptors.response.use(
 
       return Promise.reject(error);
     }
+
     if (statusCode >= 500 || !statusCode) {
       return Promise.reject(new Error('An unexpected error has occurred.'));
     }

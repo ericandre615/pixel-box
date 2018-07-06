@@ -93,6 +93,80 @@ export const drawPixel = (ctx, mouse, pixel) => {
   return { x, y, pixelWidth, pixelHeight, color: pixel.color };
 };
 
+// bresenham line algorithm
+export const drawLine = (ctx, mouse, pixel) => {
+  const { sx, sy, x: mx, y: my } = mouse;
+  const line = [];
+  let steep = false;
+  let a = { x: sx, y: sy };
+  let b = { x: mx, y: my };
+  let dx = b.x - a.x;
+  let dy = b.y - a.y;
+
+  if (!mx || !my || !sx || !sy) {
+    return line;
+  }
+
+  if (Math.abs(dx) < Math.abs(dy)) {
+    [dx, dy] = [dy, dx];
+    [a.x, a.y] = [a.y, a.x];
+    [b.x, b.y] = [b.y, b.x];
+
+    steep = true;
+  }
+
+  if (dx < 0) {
+    [a, b] = [b, a];
+
+    dy *= -1;
+    dx *= -1;
+  }
+
+  let error = -(dx);
+  const errorStep = 2 * Math.abs(dy);
+  const yStep = dy < 0 ? -1 : 1;
+
+  let { y } = a;
+
+  for (let x = a.x; x <= b.x; x += 1) { // eslint-disable-line prefer-destructuring
+    if (error >= 0) {
+      error -= 2 * dx;
+
+      y += yStep;
+    }
+
+    error += errorStep;
+
+    if (steep) {
+      line.push({ x: y, y: x });
+    } else {
+      line.push({ x, y });
+    }
+  }
+
+  if (line && line.length) {
+    line.forEach(coords => drawPixel(ctx, {
+      x: coords.x, y: coords.y,
+    }, pixel));
+  }
+
+  return line;
+};
+
+export const drawRectangle = (ctx, mouse, pixel) => {
+  const { sx, sy, x, y } = mouse;
+  const topMouse = Object.assign({}, mouse, { sx, sy, x, y: sy });
+  const rightMouse = Object.assign({}, mouse, { sx: x, sy, x, y });
+  const bottomMouse = Object.assign({}, mouse, { sx: x, sy: y, x: sx, y });
+  const leftMouse = Object.assign({}, mouse, { sx, sy: y, x: sx, y: sy });
+  const top = drawLine(ctx, topMouse, pixel);
+  const right = drawLine(ctx, rightMouse, pixel);
+  const bottom = drawLine(ctx, bottomMouse, pixel);
+  const left = drawLine(ctx, leftMouse, pixel);
+
+  return { top, right, bottom, left };
+};
+
 export const getCanvasData = (canvas = document.createElement('canvas')) => canvas.toDataURL();
 
 export const drawCanvasData = (canvas = document.createElement('canvas'), dataURL) => {
@@ -117,6 +191,8 @@ export default {
   clearGrid,
   getPixel,
   drawPixel,
+  drawLine,
+  drawRectangle,
   getCanvasData,
   drawCanvasData,
 };
