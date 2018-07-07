@@ -4,10 +4,13 @@ import ToolButton from './tool-button';
 
 const id = 'toolbox-ui-container';
 
-export const ToolBox = ({ setSelectedTool, setElementPosition, mouse, layout }) => {
+export const ToolBox = ({ selectedTool, setSelectedTool, setElementPosition, mouse, layout }) => {
   const EraserButton = ToolButton;
   const PencilButton = ToolButton;
   const DropperButton = ToolButton;
+  const LineButton = ToolButton;
+  const RectButton = ToolButton;
+
   return (
     <Fragment>
       <UiContainer
@@ -19,9 +22,11 @@ export const ToolBox = ({ setSelectedTool, setElementPosition, mouse, layout }) 
         relative
         setElementPosition={ setElementPosition }
       >
-        <EraserButton tool="eraser" setSelectedTool={ setSelectedTool } />
-        <PencilButton tool="pencil" setSelectedTool={ setSelectedTool } />
-        <DropperButton tool="droplet" setSelectedTool={ setSelectedTool } />
+        <EraserButton tool="eraser" setSelectedTool={ setSelectedTool } selectedTool={ selectedTool } />
+        <PencilButton tool="pencil" setSelectedTool={ setSelectedTool } selectedTool={ selectedTool } />
+        <DropperButton tool="eyedropper" setSelectedTool={ setSelectedTool } selectedTool={ selectedTool } />
+        <LineButton tool="line" setSelectedTool={ setSelectedTool } selectedTool={ selectedTool } />
+        <RectButton tool="rectangle" setSelectedTool={ setSelectedTool } selectedTool={ selectedTool } />
       </UiContainer>
     </Fragment>
   );

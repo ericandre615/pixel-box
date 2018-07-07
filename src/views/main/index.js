@@ -96,6 +96,7 @@ export class Main extends Component {
         <ToolBox
           mouse={ mouse }
           layout={ layout }
+          selectedTool={ selectedTool }
           setSelectedTool={ dispatchSetSelectedTool }
           setElementPosition={ dispatchSetElementPosition }
         />
