@@ -1,44 +1,26 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { drawCanvasData } from '../../lib/drawing';
 
-export class Preview extends Component {
-  componentDidMount() {
-    const { layer: { id, dataURL } } = this.props;
+export const Preview = (props) => {
+  const { layer: { id, dataURL }, width, height } = props;
 
-    this.canvas = document.getElementById(`${id}-layer-preview`);
-    this.ctx = this.canvas.getContext('2d');
+  useEffect(() => {
+    const canvas = document.getElementById(`${id}-layer-preview`);
 
     if (dataURL) {
-      drawCanvasData(this.canvas, dataURL);
+      drawCanvasData(canvas, dataURL);
     }
-  }
+  });
 
-  componentWillReceiveProps(nextProps) {
-    const { layer: { dataURL } } = this.props;
-    const { layer: { dataURL: nextDataURL } } = nextProps;
-
-    if (dataURL && dataURL !== nextDataURL) {
-      drawCanvasData(this.canvas, nextDataURL);
-    }
-  }
-
-  render() {
-    const {
-      layer: { id },
-      width,
-      height,
-    } = this.props;
-
-    return (
-      <canvas
-        id={ `${id}-layer-preview` }
-        className="canvas-layer"
-        width={ width }
-        height={ height }
-        style={{ backgroundColor: 'white' }}
-      />
-    );
-  }
-}
+  return (
+    <canvas
+      id={ `${id}-layer-preview` }
+      className="canvas-layer"
+      width={ width }
+      height={ height }
+      style={{ backgroundColor: 'white' }}
+    />
+  );
+};
 
 export default Preview;

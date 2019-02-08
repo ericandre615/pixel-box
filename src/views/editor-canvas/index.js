@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import getProp from 'lodash/get';
 import { UiContainer } from '../../components/ui/ui-container';
 import CanvasGrid from '../../components/canvas-grid';
@@ -18,87 +18,80 @@ const defaultPixel = {
   },
 };
 
-export class EditorCanvas extends Component {
-  componentDidMount() {
-    const { layers } = this.props;
-    this.layers = layers;
-  }
+export const EditorCanvas = (props) => {
+  const {
+    showGrid,
+    toggleGrid,
+    width,
+    height,
+    layers,
+    selectedLayer,
+    layout,
+    updateLayer,
+    mouse,
+    pixel,
+    tool,
+    setElementPosition,
+    setSelectedColor,
+  } = props;
+  const { r, g, b, a } = pixel.color.rgb;
 
-  render() {
-    const {
-      showGrid,
-      toggleGrid,
-      width,
-      height,
-      layers,
-      selectedLayer,
-      layout,
-      updateLayer,
-      mouse,
-      pixel,
-      tool,
-      setElementPosition,
-      setSelectedColor,
-    } = this.props;
-    const { r, g, b, a } = pixel.color.rgb;
+  const activePixel = Object.assign({}, defaultPixel, {
+    color: `rgba(${r}, ${g}, ${b}, ${a})`,
+  });
 
-    const activePixel = Object.assign({}, defaultPixel, {
-      color: `rgba(${r}, ${g}, ${b}, ${a})`,
-    });
+  const Layers = Object.keys(layers).map(key => (
+    <Layer
+      className="layer-canvas"
+      key={ `${key}-layer` }
+      id={ key }
+      width={ width }
+      height={ height }
+      layer={ layers[key] }
+      selected={ selectedLayer === key }
+      isBackground={ (key === 'backgroundLayer') }
+      updateLayer={ updateLayer }
+      setSelectedColor={ setSelectedColor }
+      mouse={ mouse }
+      pixel={ activePixel }
+      tool={ tool }
+    />
+  ));
 
-    const Layers = Object.keys(layers).map(key => (
-      <Layer
-        className="layer-canvas"
-        key={ `${key}-layer` }
-        id={ key }
-        width={ width }
-        height={ height }
-        layer={ layers[key] }
-        selected={ selectedLayer === key }
-        isBackground={ (key === 'backgroundLayer') }
-        updateLayer={ updateLayer }
-        setSelectedColor={ setSelectedColor }
+  return (
+    <Fragment>
+      <UiContainer
+        id="editor-ui-container"
+        title={ getProp(layers[selectedLayer], 'label') || 'Main Canvas' }
+        layout={ layout }
+        draggable
+        relative
         mouse={ mouse }
-        pixel={ activePixel }
-        tool={ tool }
-      />
-    ));
-
-    return (
-      <Fragment>
-        <UiContainer
-          id="editor-ui-container"
-          title={ getProp(layers[selectedLayer], 'label') || 'Main Canvas' }
-          layout={ layout }
-          draggable
-          relative
-          mouse={ mouse }
-          setElementPosition={ setElementPosition }
-          uiButton={
-            <GridViewButton
-              showGrid={ showGrid }
-              toggleGrid={ () => toggleGrid(editorId) }
-            />
-          }
-        >
-          { Layers }
-          <CanvasGrid
-            id={ editorId }
+        setElementPosition={ setElementPosition }
+        uiButton={
+          <GridViewButton
             showGrid={ showGrid }
-            width={ width }
-            height={ height }
-            cell={ activePixel }
-            style={{ /* temporary positioning */
-              position: 'absolute',
-              top: '29px',
-              left: '8px',
-            }}
+            toggleGrid={ () => toggleGrid(editorId) }
           />
-        </UiContainer>
-      </Fragment>
-    );
-  }
-}
+        }
+      >
+        { Layers }
+        <CanvasGrid
+          id={ editorId }
+          showGrid={ showGrid }
+          width={ width }
+          height={ height }
+          cell={ activePixel }
+          style={{ /* temporary positioning */
+            position: 'absolute',
+            top: '29px',
+            left: '8px',
+          }}
+        />
+      </UiContainer>
+    </Fragment>
+  );
+};
 
 EditorCanvas.defaultProps = {
   showGrid: true,
