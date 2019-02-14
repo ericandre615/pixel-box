@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import Button from '../elements/button';
 
@@ -8,38 +8,25 @@ const toolStyles = {
   },
 };
 
-export class ToolButton extends Component {
-  constructor(props) {
-    super(props);
-
-    this.setTool = this.setTool.bind(this);
-  }
-
-  setTool() {
-    const { setSelectedTool, tool } = this.props;
-
+export const ToolButton = (props) => {
+  const { setSelectedTool, tool, selectedTool } = props;
+  const selected = tool && tool === selectedTool;
+  const buttonClassnames = classnames(
+    `icon-${tool}`,
+    'tool-button',
+    { selected });
+  const setTool = () => {
     setSelectedTool(tool);
-  }
+  };
 
-  render() {
-    const { tool, selectedTool } = this.props;
-    const selected = tool && tool === selectedTool;
-    const buttonClassnames = classnames(
-      `icon-${tool}`,
-      'tool-button',
-      {
-        selected,
-      });
-
-    return (
-      <Button
-        className={ buttonClassnames }
-        type="flat"
-        style={ selected && toolStyles.selected }
-        onClick={ this.setTool }
-      />
-    );
-  }
-}
+  return (
+    <Button
+      className={ buttonClassnames }
+      type="flat"
+      style={ selected && toolStyles.selected }
+      onClick={ setTool }
+    />
+  );
+};
 
 export default ToolButton;

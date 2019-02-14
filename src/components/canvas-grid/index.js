@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { drawGrid } from '../../lib/drawing';
 
@@ -11,34 +11,29 @@ const defaultStyles = {
   pointerEvents: 'none', // allow click through to below layers
 };
 
-export class CanvasGrid extends Component {
-  componentDidMount() {
-    // temp test
-    const { cell, id } = this.props;
+export const CanvasGrid = (props) => {
+  const { showGrid, width, height, id, style, cell } = props;
+  useEffect(() => {
     const canvas = document.getElementById(`${id}-grid`);
 
     drawGrid(canvas, cell);
-  }
+  }, []);
 
-  render() {
-    const { showGrid, width, height, id, style } = this.props;
+  const userStyle = style ? Object.assign({}, defaultStyles, style) : defaultStyles;
+  const currentStyle = Object.assign({},
+    userStyle,
+    { display: (showGrid) ? 'initial' : 'none' });
 
-    const userStyle = style ? Object.assign({}, defaultStyles, style) : defaultStyles;
-    const currentStyle = Object.assign({},
-      userStyle,
-      { display: (showGrid) ? 'initial' : 'none' });
-
-    return (
-      <canvas
-        className="canvas-grid"
-        id={ `${id}-grid` }
-        width={ width }
-        height={ height }
-        style={ currentStyle }
-      />
-    );
-  }
-}
+  return (
+    <canvas
+      className="canvas-grid"
+      id={ `${id}-grid` }
+      width={ width }
+      height={ height }
+      style={ currentStyle }
+    />
+  );
+};
 
 CanvasGrid.propTypes = {
   id: PropTypes.string,

@@ -10,7 +10,7 @@ export const Preview = (props) => {
     if (dataURL) {
       drawCanvasData(canvas, dataURL);
     }
-  });
+  }, [dataURL]);
 
   return (
     <canvas
