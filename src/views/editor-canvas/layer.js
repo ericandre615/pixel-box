@@ -198,8 +198,6 @@ export class Layer extends Component {
           break;
       }
 
-      console.log('UPDATEMOUSEMOVE ', tool);
-
       this.updateLayerData();
     }
 
