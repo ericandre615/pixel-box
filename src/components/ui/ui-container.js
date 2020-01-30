@@ -11,7 +11,7 @@ const paddingDefaults = {
 };
 
 const defaultStyle = {
-  // position: 'relative',
+  position: 'relative',
   minWidth: '128px',
   backgroundColor: '#818184',
   padding: '0px',
@@ -134,7 +134,7 @@ export const UiContainer = (props) => {
     styles,
     (relative) ? { position: 'relative' } : null,
     { top, left },
-    (dragStarted) ? { position: 'absolute' } : null,
+    (dragStarted || (layout && layout[id])) ? { position: 'absolute' } : { position: 'relative' },
     { width },
     (height)
       ? { height: `${totalHeight}px` }
