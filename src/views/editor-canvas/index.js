@@ -64,6 +64,7 @@ export const EditorCanvas = (props) => {
         id="editor-ui-container"
         title={ getProp(layers[selectedLayer], 'label') || 'Main Canvas' }
         layout={ layout }
+        width={ width }
         draggable
         relative
         mouse={ mouse }

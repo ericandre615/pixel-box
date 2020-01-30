@@ -17,7 +17,7 @@ export const CanvasGrid = (props) => {
     const canvas = document.getElementById(`${id}-grid`);
 
     drawGrid(canvas, cell);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const userStyle = style ? Object.assign({}, defaultStyles, style) : defaultStyles;
   const currentStyle = Object.assign({},
