@@ -167,9 +167,11 @@ export class Layer extends Component {
     if (selected) {
       switch (tool) {
         case tools.pencil:
-          return mouse.down && draw(this.ctx, mouse, activePixel);
+          if (mouse.down) draw(this.ctx, mouse, activePixel);
+          break;
         case tools.eraser:
-          return mouse.down && draw(this.ctx, mouse, activePixel);
+          if (mouse.down) draw(this.ctx, mouse, activePixel);
+          break;
         case tools.rectangle:
           if (checkMouseStart(mouseStart)) {
             const rectMouse = Object.assign({}, mouse, {
@@ -195,6 +197,7 @@ export class Layer extends Component {
         default:
           break;
       }
+
       this.updateLayerData();
     }
 

@@ -1,52 +1,44 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import identity from 'lodash/identity';
 import { getFormValue } from '../../state/form/selectors';
 import { registerFormInput, updateFormInput } from '../../state/form/actions';
 
-class FormInput extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  componentDidMount() {
-    const { dispatchRegisterFormInput, name, value } = this.props;
+const FormInput = (props) => {
+  useEffect(() => {
+    const { dispatchRegisterFormInput, name, value } = props;
 
     dispatchRegisterFormInput(name, value);
-  }
+  });
 
-  handleChange(e) {
-    e.preventDefault();
-    const { value } = e.target;
-    const { dispatchUpdateFormInput, name, onChange } = this.props;
+  const handleChange = (evt) => {
+    evt.preventDefault();
+    const { value } = evt.target;
+    const { dispatchUpdateFormInput, name, onChange } = props;
 
     dispatchUpdateFormInput(name, value);
     onChange(name, value);
-  }
+  };
 
-  render() {
-    const {
-      name,
-      value,
-      onChange,
-      dispatchRegisterFormInput,
-      dispatchUpdateFormInput,
-      ...rest
-    } = this.props;
+  const {
+    name,
+    value,
+    onChange,
+    dispatchRegisterFormInput,
+    dispatchUpdateFormInput,
+    ...rest
+  } = props;
 
-    return (
-      <input
-        type="text"
-        name={ name }
-        value={ value }
-        onChange={ this.handleChange }
-        { ...rest }
-      />
-    );
-  }
-}
+  return (
+    <input
+      type="text"
+      name={ name }
+      value={ value }
+      onChange={ handleChange }
+      { ...rest }
+    />
+  );
+};
 
 FormInput.defaultProps = {
   name: '',
