@@ -1,6 +1,7 @@
 import { SET_ELEMENT_POSITION } from './action-types';
+import layout from '../../config/layout';
 
-const initialState = {};
+const initialState = layout || {};
 
 export const layoutReducers = (state = initialState, action) => {
   const { elem, position } = action;

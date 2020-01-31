@@ -13,7 +13,14 @@ const handleChange = (change, layer) => (name, value) => {
   return change(updatedLayer);
 };
 
-const Layer = ({ layer, selected, width, height, updateLayer, setSelectedLayer }) => {
+const Layer = ({
+  layer,
+  selected,
+  width,
+  height,
+  updateLayer,
+  setSelectedLayer
+}) => {
   const { id, label, priority } = layer;
   const layerClassNames = classnames(
     'flex-container',
